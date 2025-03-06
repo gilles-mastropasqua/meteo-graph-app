@@ -207,3 +207,17 @@ h4 {
 p {
     @apply leading-7 [&:not(:first-child)]:mt-4;
 }
+
+.mapboxgl-style-list button {
+    color: #555;
+}
+
+.mapbox-ctrl-styles button {
+    @apply text-sm font-semibold;
+}
+
+.mapbox-ctrl-styles button:not(.-active) + button, .mapbox-ctrl-styles button.-active {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}

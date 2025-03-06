@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { zoomAdjust } from '@/lib/map';
 
 interface MapState {
     mapRef: mapboxgl.Map | null;
@@ -24,7 +25,7 @@ export const useMapStore = create<MapState>((set, get) => ({
     flyToLocation: (longitude, latitude, zoom) => {
         const map = get().mapRef;
         if (map) {
-            map.flyTo({ center: [longitude, latitude], zoom: zoom, duration: 2000 });
+            map.flyTo({ center: [longitude, latitude], zoom: zoomAdjust(zoom), duration: 2000 });
         }
     },
 

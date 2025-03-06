@@ -10,6 +10,8 @@ import { useMapStore } from '@/stores/useMapStore';
 import Loading from '@/app/dashboard/loading';
 import { Feature, Point } from 'geojson';
 import { GetPostesQuery } from '@/graphql/generated';
+import StylesControl from '@mapbox-controls/styles';
+import { zoomAdjust } from '@/lib/map';
 
 if (!process.env.NEXT_PUBLIC_MAPBOX_API_KEY) {
     throw new Error('Mapbox API key is not defined in the environment variables.');
@@ -34,6 +36,66 @@ const MeteoGraphMap = () => {
     const { postes } = usePostesStore();
     const { openPopup } = usePopupStore();
 
+    // References to save sources and layers for restoration
+    const savedSources = useRef<Record<string, mapboxgl.SourceSpecification>>({});
+    const savedLayers = useRef<mapboxgl.Layer[]>([]);
+
+    /**
+     * Saves all current sources and layers from the map for later restoration.
+     * @param map - The Mapbox map instance.
+     */
+    const saveSourcesAndLayers = (map: mapboxgl.Map) => {
+        const sources: Record<string, mapboxgl.SourceSpecification> = {};
+        const layers: mapboxgl.Layer[] = [];
+
+        // Save all sources from the map's current style
+        Object.entries(map.getStyle()!.sources).forEach(([id, source]) => {
+            sources[id] = source;
+        });
+
+        // Save only layers added by the application
+        map.getStyle()!.layers?.forEach((layer) => {
+            if (layer.id.endsWith('layer')) {
+                layers.push(layer);
+            }
+        });
+
+        savedSources.current = sources;
+        savedLayers.current = layers;
+
+        console.log('Saved sources:', savedSources.current);
+        console.log('Saved layers:', savedLayers.current);
+    };
+
+    /**
+     * Restores all previously saved sources and layers back onto the map.
+     * @param map - The Mapbox map instance.
+     */
+    const restoreSourcesAndLayers = (map: mapboxgl.Map) => {
+        // Restore all sources
+        Object.entries(savedSources.current).forEach(([id, source]) => {
+            if (!map.getSource(id)) {
+                console.log(`Restoring source: ${id}`);
+                map.addSource(id, source);
+            }
+        });
+
+        // Restore all layers
+        savedLayers.current.forEach((layer) => {
+            if (!map.getLayer(layer.id)) {
+                console.log(`Restoring layer: ${layer.id}`);
+                try {
+                    map.addLayer(layer);
+                } catch (error) {
+                    const message = error instanceof Error ? error.message : 'Unknown error';
+                    console.warn(`Failed to add layer ${layer.id}: ${message}`);
+                    console.error(error);
+                }
+            }
+        });
+    };
+
+
     useEffect(() => {
         if (!mapContainer.current || mapInstance.current) return;
 
@@ -43,16 +105,60 @@ const MeteoGraphMap = () => {
         // Initialize Mapbox instance
         mapInstance.current = new mapboxgl.Map({
             container: mapContainer.current as HTMLDivElement,
-            style: 'mapbox://styles/mapbox/outdoors-v12',
+            style: localStorage.getItem('selectedMapStyle') || 'mapbox://styles/mapbox/outdoors-v12',
             center: lastPosition ? lastPosition.center : [2.2137, 46.6034], // Default to France
-            zoom: lastPosition ? lastPosition.zoom : 5.5,
+            zoom: lastPosition ? lastPosition.zoom : zoomAdjust(5.5),
+            preserveDrawingBuffer: true,
         });
 
         mapInstance.current.on('load', () => {
             if (!mapInstance.current) return;
 
+            // Add StylesControl for switching map styles
+            const styles = [
+                {
+                    label: 'Outdoors',
+                    styleName: 'Mapbox Outdoors',
+                    styleUrl: 'mapbox://styles/mapbox/outdoors-v12',
+                },
+                {
+                    label: 'Satellite',
+                    styleName: 'Mapbox Satellite Street',
+                    styleUrl: 'mapbox://styles/mapbox/satellite-streets-v12',
+                },
+            ];
+
+            mapInstance.current.addControl(
+                new StylesControl({
+                    styles: styles,
+                    compact: false, // Display expanded style menu
+                    onChange: (style) => {
+
+                        // Save selected style in localStorage
+                        localStorage.setItem('selectedMapStyle', style.styleUrl);
+
+                        // Save current sources and layers
+                        saveSourcesAndLayers(mapInstance.current!);
+
+                        // Change the map's style
+                        mapInstance.current?.setStyle(style.styleUrl);
+
+                        // Restore sources and layers after the new style loads
+                        mapInstance.current?.once('style.load', () => {
+                            restoreSourcesAndLayers(mapInstance.current!);
+                        });
+                    },
+                }),
+                'top-right',
+            );
+
+
             setMapRef(mapInstance.current);
+
             initializeMapControls(mapInstance.current);
+
+            // Save initial sources and layers
+            saveSourcesAndLayers(mapInstance.current);
 
             // Add GeoJSON source for stations
             mapInstance.current.addSource('postes', {

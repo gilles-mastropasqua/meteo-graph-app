@@ -13,7 +13,6 @@ import '@mapbox-controls/ruler/src/index.css';
 import '@mapbox-controls/inspect/src/index.css';
 import 'react-mapbox-elevation-control/dist/styles.css';
 import '@mapbox-controls/styles/src/index.css';
-import StylesControl from '@mapbox-controls/styles';
 
 
 /**
@@ -40,16 +39,16 @@ export const initializeMapControls = (map: mapboxgl.Map): void => {
     // Add inspect control for inspecting map features
     map.addControl(new InspectControl(), 'top-right');
 
-    const styles = [{
-        label: 'Outdoors',
-        styleName: 'Mapbox Outdoors',
-        styleUrl: 'mapbox://styles/mapbox/outdoors-v12',
-    }, {
-        label: 'Satellite Street',
-        styleName: 'Mapbox Satellite Street',
-        styleUrl: 'mapbox://styles/mapbox/satellite-streets-v12',
-    }];
+    // const styles = [{
+    //     label: 'Outdoors',
+    //     styleName: 'Mapbox Outdoors',
+    //     styleUrl: 'mapbox://styles/mapbox/outdoors-v12',
+    // }, {
+    //     label: 'Satellite Street',
+    //     styleName: 'Mapbox Satellite Street',
+    //     styleUrl: 'mapbox://styles/mapbox/satellite-streets-v12',
+    // }];
+    //
+    // map.addControl(new StylesControl({ styles: styles, compact: true }), 'top-right');
 
-    map.addControl(new StylesControl({ styles: styles, compact: true }), 'top-right');
-    
 };
