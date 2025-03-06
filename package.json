@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "graphql-codegen --config codegen.yml && next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "lint": "next lint",
     "graphql:generate": "graphql-codegen --config codegen.yml"
   },
