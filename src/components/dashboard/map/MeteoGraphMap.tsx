@@ -7,11 +7,12 @@ import { initializeMapControls } from '@/components/dashboard/map/controls/mapCo
 import { usePostesStore } from '@/stores/usePostesStore';
 import { usePopupStore } from '@/stores/usePopupStore';
 import { useMapStore } from '@/stores/useMapStore';
-import Loading from '@/app/dashboard/loading';
+import Loading from '@/app/(dashboard)/dashboard/loading';
 import { Feature, Point } from 'geojson';
 import { GetPostesQuery } from '@/graphql/generated';
 import StylesControl from '@mapbox-controls/styles';
-import { zoomAdjust } from '@/lib/map';
+import { getStationType, zoomAdjust } from '@/lib/map';
+import { useRouter } from 'next/navigation';
 
 if (!process.env.NEXT_PUBLIC_MAPBOX_API_KEY) {
     throw new Error('Mapbox API key is not defined in the environment variables.');
@@ -34,7 +35,8 @@ const MeteoGraphMap = () => {
 
     const { setMapRef, savePosition, loadSavedPosition } = useMapStore();
     const { postes } = usePostesStore();
-    const { openPopup } = usePopupStore();
+    const { setSelectedPoste } = usePopupStore();
+    const router = useRouter();
 
     // References to save sources and layers for restoration
     const savedSources = useRef<Record<string, mapboxgl.SourceSpecification>>({});
@@ -114,6 +116,16 @@ const MeteoGraphMap = () => {
         mapInstance.current.on('load', () => {
             if (!mapInstance.current) return;
 
+            // mapInstance.current.loadImage('/map/cloud.png', (error, image) => {
+            //
+            //     if (error) throw error;
+            //
+            //     if (!mapInstance.current || !image) return;
+            //
+            //     // Add image to the active style and make it SDF-enabled
+            //     mapInstance.current.addImage('marker-id', image, { sdf: true });
+
+
             // Add StylesControl for switching map styles
             const styles = [
                 {
@@ -171,8 +183,9 @@ const MeteoGraphMap = () => {
                         properties: {
                             numPoste: poste.numPoste,
                             nomUsuel: poste.nomUsuel,
-                            typePoste: poste.typePosteActuel,
+                            typePosteActuel: poste.typePosteActuel,
                             commune: poste.commune,
+                            lieuDit: poste.lieuDit,
                             alti: poste.alti,
                             datouvr: poste.datouvr,
                             datferm: poste.datferm,
@@ -186,31 +199,52 @@ const MeteoGraphMap = () => {
                 },
             });
 
-            // Add Mapbox layer for stations
             mapInstance.current.addLayer({
                 id: 'postes-layer',
                 type: 'circle',
+                // 'type': 'symbol',
+                // 'layout': {
+                //     'icon-allow-overlap': true,
+                //     'icon-image': 'marker-id',
+                //     'icon-size': 0.2,
+                // },
                 source: 'postes',
+                // paint: {
+                //     'icon-color': [
+                //         'match',
+                //         ['get', 'typePoste'],
+                //         1, '#3498db', // Blue
+                //         2, '#2ecc71', // Green
+                //         3, '#f1c40f', // Yellow
+                //         4, '#e74c3c', // Red
+                //         0, '#aa00ff', // Purple
+                //         '#7f8c8d', // Default Gray
+                //     ],
+                // },
                 paint: {
                     'circle-radius': 6,
                     'circle-color': [
                         'match',
-                        ['get', 'typePoste'],
-                        1, '#3498db', // Blue
-                        2, '#2ecc71', // Green
-                        3, '#f1c40f', // Yellow
-                        4, '#e74c3c', // Red
-                        0, '#aa00ff', // Purple
-                        '#7f8c8d', // Default Gray
+                        ['get', 'typePosteActuel'],
+                        0, '#007208',
+                        1, '#006c80',
+                        2, '#0027a9',
+                        3, '#efc300',
+                        4, '#ff8f00',
+                        5, '#ff1900',
+                        '#7f8c8d', // Default
                     ],
-                    'circle-stroke-width': 2,
+                    'circle-stroke-width': 1,
                     'circle-stroke-color': '#fff',
                 },
             });
 
+
             // Show tooltip on hover
             mapInstance.current.on('mouseenter', 'postes-layer', (e) => {
                 if (!mapInstance.current || !e.features || e.features.length === 0) return;
+
+                mapInstance.current.getCanvas().style.cursor = 'pointer';
 
                 const feature = e.features[0] as Feature<Point>;
                 const { properties, geometry } = feature;
@@ -219,10 +253,42 @@ const MeteoGraphMap = () => {
 
                 const poste = properties as unknown as PosteType; // ✅ Explicitly cast properties to expected type
 
-                new mapboxgl.Popup({ closeButton: false, closeOnClick: false })
+                const formatDate = (dateStr: string | null | undefined): string => {
+                    if (!dateStr) return 'N/A';
+                    const date = new Date(dateStr);
+                    return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: '2-digit',
+                        year: 'numeric',
+                    });
+                };
+
+                new mapboxgl.Popup({ closeButton: false, closeOnClick: false, className: 'poste_popup_container' })
                     .setLngLat(geometry.coordinates as [number, number])
-                    .setHTML(`<strong class="text-black">${poste.nomUsuel || 'Unknown'}</strong>`)
+                    .setHTML(`
+                        <div class="">
+                            <h5 class="text-center">#${poste.numPoste}</h5>
+                            <h4 class="text-center">${poste.nomUsuel || 'Unknown Name'}</h4>
+                            <hr class="mt-3 mb-4"/>
+                            <table class="w-full text-sm">
+                                <tbody>
+                                    <tr><td >City:</td><td>${poste.commune || 'N/A'}</td></tr>
+                                    <tr><td >Altitude:</td><td>${poste.alti || 'N/A'} m</td></tr>
+                                    <tr><td >Opening Date:</td><td>${formatDate(poste.datouvr)}</td></tr>
+                                    <tr><td >Closing Date:</td><td>${formatDate(poste.datferm)}</td></tr>
+                                    <tr><td >Location:</td><td>${poste.lieuDit || 'N/A'}</td></tr>
+                                    <tr><td >Latitude:</td><td>${poste.lat}</td></tr>
+                                    <tr><td >Longitude:</td><td>${poste.lon}</td></tr>
+                                    <tr><td >LambX:</td><td>${poste.lambx}</td></tr>
+                                    <tr><td >LambY:</td><td>${poste.lamby}</td></tr>
+                                    <tr><td >Station Type:</td><td>${poste.typePosteActuel} </td></tr>
+                                </tbody>
+                            </table>
+                            <p>${getStationType(poste.typePosteActuel)}</p>
+                        </div>
+                    `)
                     .addTo(mapInstance.current);
+
             });
 
             // Remove tooltip on mouse leave
@@ -232,15 +298,17 @@ const MeteoGraphMap = () => {
                 document.querySelectorAll('.mapboxgl-popup').forEach((popup) => popup.remove());
             });
 
-            // Open a custom popup on click
+
             mapInstance.current.on('click', 'postes-layer', (e) => {
                 if (!mapInstance.current || !e.features || e.features.length === 0) return;
 
                 const feature = e.features[0] as Feature<Point>;
-                const poste = feature.properties as unknown as PosteType; // ✅ Correctly cast properties
+                const poste = feature.properties as unknown as PosteType;
 
-                openPopup(poste);
+                setSelectedPoste(poste); // Stocke le poste dans Zustand
+                router.push(`/dashboard/poste/${poste.numPoste}`); // Redirige
             });
+            // });
 
             setMapReady(true);
         });
@@ -260,7 +328,7 @@ const MeteoGraphMap = () => {
                 mapInstance.current = null;
             }
         };
-    }, [setMapRef, savePosition, loadSavedPosition, postes, openPopup]);
+    }, [setMapRef, savePosition, loadSavedPosition, postes]);
 
     // Ensure the map resizes properly when it's ready
     useEffect(() => {

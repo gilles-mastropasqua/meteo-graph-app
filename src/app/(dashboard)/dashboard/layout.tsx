@@ -12,7 +12,9 @@ export default async function DashboardLayout({
     children: React.ReactNode
 }) {
     return (
-        <DashboardTemplate>{children}</DashboardTemplate>
+        <DashboardTemplate>
+            {children}
+        </DashboardTemplate>
 
     );
 }

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
 
@@ -18,7 +18,7 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(59.18% 0.1195 253.73);
+    --primary: oklch(62.68% 0.2325 303.9);
     --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
@@ -54,13 +54,15 @@
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.145 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(59.18% 0.1195 253.73);
+    /*--primary: oklch(59.18% 0.1195 253.73);*/
+    --primary: oklch(62.68% 0.2325 303.9);
     --primary-foreground: oklch(0.205 0 0);
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
     --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
+    /*--accent: oklch(0.269 0 0);*/
+    --accent: oklch(0.226 0.089 303.206);
     --accent-foreground: oklch(0.985 0 0);
     --destructive: oklch(0.396 0.141 25.723);
     --destructive-foreground: oklch(0.637 0.237 25.331);
@@ -205,7 +207,7 @@ h4 {
 }
 
 p {
-    @apply leading-7 [&:not(:first-child)]:mt-4;
+    @apply leading-5 [&:not(:first-child)]:mt-4;
 }
 
 .mapboxgl-style-list button {
@@ -220,4 +222,38 @@ p {
     pointer-events: none;
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+.poste_popup_container .mapboxgl-popup-content {
+    @apply bg-background/100 text-foreground text-sm p-3 rounded-xs border border-foreground/50;
+    max-width: none !important;
+    width: fit-content !important;
+    min-width: 200px;
+    overflow: visible !important;
+    white-space: normal;
+}
+
+.poste_popup_container .mapboxgl-popup-tip:after {
+    @apply bg-background/90;
+}
+
+.poste_popup_container table {
+    @apply border-1 border-sidebar-border text-xs;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.poste_popup_container tbody tr {
+    @apply bg-background/50 even:bg-foreground/10;
+}
+
+.poste_popup_container tbody tr td {
+    @apply px-2 py-1 sm:px-2 sm:py-2 text-left ;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+
+.poste_popup_container tbody tr td:first-child {
+    @apply font-semibold ;
 }

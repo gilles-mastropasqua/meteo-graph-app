@@ -20,12 +20,15 @@ import {
 
 import Image from 'next/image';
 import { ModeToggle } from '@/components/dashboard/mode-toggle';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '../ui/breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb';
 import { Separator } from '../ui/separator';
-import PostePopup from '@/components/dashboard/map/PostePopup';
+import PostePopup from '@/components/dashboard/map/PosteDialog/PostePopup';
+import { useBreadcrumbStore } from '@/stores/useBreadcrumpStore';
 
 
 export default function DashboardTemplate({ children }: { children: React.ReactNode }) {
+
+    const { items } = useBreadcrumbStore();
     return (
         <SidebarProvider>
             <Sidebar collapsible="icon">
@@ -64,13 +67,18 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
                             />
                             <Breadcrumb>
                                 <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="/dashboard">
-                                            Dashboard
-                                        </BreadcrumbLink>
-                                    </BreadcrumbItem>
+                                    {items.map((item, index) => (
+                                        <React.Fragment key={index}>
+                                            <BreadcrumbItem className="hidden md:block">
+                                                <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+                                            </BreadcrumbItem>
+                                            {index !== items.length - 1 &&
+                                                <BreadcrumbSeparator className="hidden md:block" />}
+                                        </React.Fragment>
+                                    ))}
                                 </BreadcrumbList>
                             </Breadcrumb>
+
                         </div>
                         <div className={'float-right'}>
                             <ModeToggle />
