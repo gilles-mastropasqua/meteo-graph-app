@@ -12,7 +12,7 @@ import { Feature, Point } from 'geojson';
 import { GetPostesQuery } from '@/graphql/generated';
 import StylesControl from '@mapbox-controls/styles';
 import { getStationType, zoomAdjust } from '@/lib/map';
-import { useRouter } from 'next/navigation';
+
 
 if (!process.env.NEXT_PUBLIC_MAPBOX_API_KEY) {
     throw new Error('Mapbox API key is not defined in the environment variables.');
@@ -35,8 +35,8 @@ const MeteoGraphMap = () => {
 
     const { setMapRef, savePosition, loadSavedPosition } = useMapStore();
     const { postes } = usePostesStore();
-    const { setSelectedPoste } = usePopupStore();
-    const router = useRouter();
+    const { openDrawer } = usePopupStore();
+
 
     // References to save sources and layers for restoration
     const savedSources = useRef<Record<string, mapboxgl.SourceSpecification>>({});
@@ -116,16 +116,6 @@ const MeteoGraphMap = () => {
         mapInstance.current.on('load', () => {
             if (!mapInstance.current) return;
 
-            // mapInstance.current.loadImage('/map/cloud.png', (error, image) => {
-            //
-            //     if (error) throw error;
-            //
-            //     if (!mapInstance.current || !image) return;
-            //
-            //     // Add image to the active style and make it SDF-enabled
-            //     mapInstance.current.addImage('marker-id', image, { sdf: true });
-
-
             // Add StylesControl for switching map styles
             const styles = [
                 {
@@ -202,25 +192,7 @@ const MeteoGraphMap = () => {
             mapInstance.current.addLayer({
                 id: 'postes-layer',
                 type: 'circle',
-                // 'type': 'symbol',
-                // 'layout': {
-                //     'icon-allow-overlap': true,
-                //     'icon-image': 'marker-id',
-                //     'icon-size': 0.2,
-                // },
                 source: 'postes',
-                // paint: {
-                //     'icon-color': [
-                //         'match',
-                //         ['get', 'typePoste'],
-                //         1, '#3498db', // Blue
-                //         2, '#2ecc71', // Green
-                //         3, '#f1c40f', // Yellow
-                //         4, '#e74c3c', // Red
-                //         0, '#aa00ff', // Purple
-                //         '#7f8c8d', // Default Gray
-                //     ],
-                // },
                 paint: {
                     'circle-radius': 6,
                     'circle-color': [
@@ -305,10 +277,8 @@ const MeteoGraphMap = () => {
                 const feature = e.features[0] as Feature<Point>;
                 const poste = feature.properties as unknown as PosteType;
 
-                setSelectedPoste(poste); // Stocke le poste dans Zustand
-                router.push(`/dashboard/poste/${poste.numPoste}`); // Redirige
+                openDrawer(poste);
             });
-            // });
 
             setMapReady(true);
         });
@@ -328,7 +298,7 @@ const MeteoGraphMap = () => {
                 mapInstance.current = null;
             }
         };
-    }, [setMapRef, savePosition, loadSavedPosition, postes]);
+    }, [setMapRef, savePosition, loadSavedPosition, postes, openDrawer]);
 
     // Ensure the map resizes properly when it's ready
     useEffect(() => {

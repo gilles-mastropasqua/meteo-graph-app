@@ -23,6 +23,7 @@ import { ModeToggle } from '@/components/dashboard/mode-toggle';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb';
 import { Separator } from '../ui/separator';
 import { useBreadcrumbStore } from '@/stores/useBreadcrumpStore';
+import PosteDrawer from '@/components/dashboard/map/PosteDrawer/PosteDrawer';
 
 
 export default function DashboardTemplate({ children }: { children: React.ReactNode }) {
@@ -86,9 +87,10 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
                 </header>
                 <div className="flex flex-1 flex-col gap-4 h-[calc(100vh)]">
                     {children}
+                    <PosteDrawer />
                 </div>
             </SidebarInset>
-            
+
         </SidebarProvider>
     );
 }
