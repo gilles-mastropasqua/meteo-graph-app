@@ -194,7 +194,11 @@ const MeteoGraphMap = () => {
                 type: 'circle',
                 source: 'postes',
                 paint: {
-                    'circle-radius': 6,
+                    'circle-radius': [
+                        'interpolate', ['linear'], ['zoom'],
+                        0, 1,   // Zoom 0 => 1px radius
+                        22, 23,  // Zoom 22 => 22px radius
+                    ],
                     'circle-color': [
                         'match',
                         ['get', 'typePosteActuel'],
@@ -211,6 +215,17 @@ const MeteoGraphMap = () => {
                 },
             });
 
+            // mapInstance.current.on('zoom', () => {
+            //     if (!mapInstance.current) return;
+            //     mapInstance.current.setPaintProperty('postes-layer', 'circle-radius', [
+            //         'interpolate', ['linear'], ['zoom'],
+            //         5, 4,
+            //         10, 8,
+            //         15, 12,
+            //         18, 18,
+            //     ]);
+            // });
+            //
 
             // Show tooltip on hover
             mapInstance.current.on('mouseenter', 'postes-layer', (e) => {
