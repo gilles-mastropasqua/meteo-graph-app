@@ -22,7 +22,6 @@ import Image from 'next/image';
 import { ModeToggle } from '@/components/dashboard/mode-toggle';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb';
 import { Separator } from '../ui/separator';
-import PostePopup from '@/components/dashboard/map/PosteDialog/PostePopup';
 import { useBreadcrumbStore } from '@/stores/useBreadcrumpStore';
 
 
@@ -89,7 +88,7 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
                     {children}
                 </div>
             </SidebarInset>
-            <PostePopup />
+            
         </SidebarProvider>
     );
 }
