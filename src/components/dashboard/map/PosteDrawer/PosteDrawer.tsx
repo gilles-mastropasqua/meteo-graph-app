@@ -11,7 +11,7 @@ import {
     DrawerTitle,
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
-import { ArrowRightFromLine } from 'lucide-react';
+import { ArrowRightFromLine, X } from 'lucide-react';
 
 export default function PosteDrawer() {
     const { selectedPoste, isOpen, closeDrawer } = usePopupStore();
@@ -19,6 +19,18 @@ export default function PosteDrawer() {
     return (
         <Drawer open={isOpen} onOpenChange={closeDrawer} direction="right">
             <DrawerContent className="!w-[90%] lg:!w-[75%] !max-w-full border-l-1 border-sidebar-border">
+
+                <DrawerClose asChild>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-1 right-1 text-primary hover:text-foreground"
+                    >
+                        <X className="size-6" />
+                    </Button>
+                </DrawerClose>
+
+                {/* ✅ Contenu du Drawer */}
                 <DrawerHeader>
                     <DrawerTitle>{selectedPoste?.nomUsuel ?? 'Unknown Poste'}</DrawerTitle>
                     <DrawerDescription asChild>
@@ -29,11 +41,17 @@ export default function PosteDrawer() {
                         </div>
                     </DrawerDescription>
                 </DrawerHeader>
-                <DrawerFooter>
+
+                <DrawerFooter className="absolute bottom-1 right-1 pr-4 pb-4">
                     <DrawerClose asChild>
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                            variant="outline"
+                            className="w-[150px] flex items-center gap-2 bg-primary text-primary-foreground
+                                       hover:bg-primary-foreground hover:text-primary active:bg-primary
+                                       active:text-primary-foreground rounded-xs"
+                        >
                             Back to map
-                            <ArrowRightFromLine size={'sm'} />
+                            <ArrowRightFromLine size={20} />
                         </Button>
                     </DrawerClose>
                 </DrawerFooter>

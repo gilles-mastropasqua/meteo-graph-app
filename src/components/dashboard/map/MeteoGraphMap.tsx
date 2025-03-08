@@ -228,7 +228,7 @@ const MeteoGraphMap = () => {
             //
 
             // Show tooltip on hover
-            mapInstance.current.on('mouseenter', 'postes-layer', (e) => {
+            mapInstance.current.on('click', 'postes-layer', (e) => {
                 if (!mapInstance.current || !e.features || e.features.length === 0) return;
 
                 mapInstance.current.getCanvas().style.cursor = 'pointer';
@@ -250,50 +250,90 @@ const MeteoGraphMap = () => {
                     });
                 };
 
-                new mapboxgl.Popup({ closeButton: false, closeOnClick: false, className: 'poste_popup_container' })
+                // new mapboxgl.Popup({ closeButton: true, closeOnClick: true, className: 'poste_popup_container' })
+                //     .setLngLat(geometry.coordinates as [number, number])
+                //     .setHTML(`
+                //         <div class="">
+                //             <h5 class="text-center">#${poste.numPoste}</h5>
+                //             <h4 class="text-center">${poste.nomUsuel || 'Unknown Name'}</h4>
+                //             <hr class="mt-3 mb-4"/>
+                //             <table class="w-full text-sm">
+                //                 <tbody>
+                //                     <tr><td >City:</td><td>${poste.commune || 'N/A'}</td></tr>
+                //                     <tr><td >Altitude:</td><td>${poste.alti || 'N/A'} m</td></tr>
+                //                     <tr><td >Opening Date:</td><td>${formatDate(poste.datouvr)}</td></tr>
+                //                     <tr><td >Closing Date:</td><td>${formatDate(poste.datferm)}</td></tr>
+                //                     <tr><td >Location:</td><td>${poste.lieuDit || 'N/A'}</td></tr>
+                //                     <tr><td >Latitude:</td><td>${poste.lat}</td></tr>
+                //                     <tr><td >Longitude:</td><td>${poste.lon}</td></tr>
+                //                     <tr><td >LambX:</td><td>${poste.lambx}</td></tr>
+                //                     <tr><td >LambY:</td><td>${poste.lamby}</td></tr>
+                //                     <tr><td >Station Type:</td><td>${poste.typePosteActuel} </td></tr>
+                //                 </tbody>
+                //             </table>
+                //             <p>${getStationType(poste.typePosteActuel)}</p>
+                //             <button class="w-full mt-2 bg-primary text-white rounded-md py-1" onclick="openDrawer(poste);">View Details</button>
+                //         </div>
+                //     `)
+                //     .addTo(mapInstance.current);
+
+                new mapboxgl.Popup({ closeButton: true, closeOnClick: true, className: 'poste_popup_container' })
                     .setLngLat(geometry.coordinates as [number, number])
                     .setHTML(`
-                        <div class="">
+                        <div class="popup-content">
                             <h5 class="text-center">#${poste.numPoste}</h5>
                             <h4 class="text-center">${poste.nomUsuel || 'Unknown Name'}</h4>
                             <hr class="mt-3 mb-4"/>
                             <table class="w-full text-sm">
                                 <tbody>
-                                    <tr><td >City:</td><td>${poste.commune || 'N/A'}</td></tr>
-                                    <tr><td >Altitude:</td><td>${poste.alti || 'N/A'} m</td></tr>
-                                    <tr><td >Opening Date:</td><td>${formatDate(poste.datouvr)}</td></tr>
-                                    <tr><td >Closing Date:</td><td>${formatDate(poste.datferm)}</td></tr>
-                                    <tr><td >Location:</td><td>${poste.lieuDit || 'N/A'}</td></tr>
-                                    <tr><td >Latitude:</td><td>${poste.lat}</td></tr>
-                                    <tr><td >Longitude:</td><td>${poste.lon}</td></tr>
-                                    <tr><td >LambX:</td><td>${poste.lambx}</td></tr>
-                                    <tr><td >LambY:</td><td>${poste.lamby}</td></tr>
-                                    <tr><td >Station Type:</td><td>${poste.typePosteActuel} </td></tr>
+                                    <tr><td>City:</td><td>${poste.commune || 'N/A'}</td></tr>
+                                    <tr><td>Altitude:</td><td>${poste.alti || 'N/A'} m</td></tr>
+                                    <tr><td>Opening Date:</td><td>${formatDate(poste.datouvr)}</td></tr>
+                                    <tr><td>Closing Date:</td><td>${formatDate(poste.datferm)}</td></tr>
+                                    <tr><td>Location:</td><td>${poste.lieuDit || 'N/A'}</td></tr>
+                                    <tr><td>Latitude:</td><td>${poste.lat}</td></tr>
+                                    <tr><td>Longitude:</td><td>${poste.lon}</td></tr>
+                                    <tr><td>LambX:</td><td>${poste.lambx}</td></tr>
+                                    <tr><td>LambY:</td><td>${poste.lamby}</td></tr>
+                                    <tr><td>Station Type:</td><td>${poste.typePosteActuel}</td></tr>
                                 </tbody>
                             </table>
                             <p>${getStationType(poste.typePosteActuel)}</p>
+                            <button class="open-drawer-btn w-full mt-2 bg-primary text-primary-foreground rounded-xs py-1 hover:cursor-pointer hover:bg-primary-foreground hover:text-primary" data-id="${poste.numPoste}">
+                                View Details
+                            </button>
                         </div>
-                    `)
-                    .addTo(mapInstance.current);
+                    `).addTo(mapInstance.current);
+
+                document.addEventListener('click', (event) => {
+                    const target = event.target as HTMLElement;
+
+                    if (target.classList.contains('open-drawer-btn')) {
+                        const posteId = target.getAttribute('data-id');
+                        const selectedPoste = postes.find((p) => p.numPoste.toString() === posteId);
+                        if (selectedPoste) openDrawer(selectedPoste);
+                    }
+                });
+
 
             });
 
             // Remove tooltip on mouse leave
-            mapInstance.current.on('mouseleave', 'postes-layer', () => {
-                if (!mapInstance.current) return;
-                mapInstance.current.getCanvas().style.cursor = '';
-                document.querySelectorAll('.mapboxgl-popup').forEach((popup) => popup.remove());
-            });
+            // mapInstance.current.on('mouseleave', 'postes-layer', () => {
+            //     if (!mapInstance.current) return;
+            //     mapInstance.current.getCanvas().style.cursor = '';
+            //     document.querySelectorAll('.mapboxgl-popup').forEach((popup) => popup.remove());
+            // });
 
 
-            mapInstance.current.on('click', 'postes-layer', (e) => {
-                if (!mapInstance.current || !e.features || e.features.length === 0) return;
-
-                const feature = e.features[0] as Feature<Point>;
-                const poste = feature.properties as unknown as PosteType;
-
-                openDrawer(poste);
-            });
+            // mapInstance.current.on('click', 'postes-layer', (e) => {
+            //     if (!mapInstance.current || !e.features || e.features.length === 0) return;
+            //
+            //     const feature = e.features[0] as Feature<Point>;
+            //     const poste = feature.properties as unknown as PosteType;
+            //
+            //     openDrawer(poste);
+            // });
 
             setMapReady(true);
         });
