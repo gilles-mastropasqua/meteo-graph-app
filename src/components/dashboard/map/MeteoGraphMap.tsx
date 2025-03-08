@@ -361,6 +361,7 @@ const MeteoGraphMap = () => {
             mapInstance.current.resize();
         }
     }, [isMapReady]);
+    
 
     return (
         <>
