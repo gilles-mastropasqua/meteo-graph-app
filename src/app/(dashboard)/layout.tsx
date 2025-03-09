@@ -16,7 +16,10 @@ export default function DashboardLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning={true}>
-        <body>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </head>
+        <body className="h-screen flex flex-col">
         <ThemeProvider
             attribute="class"
             defaultTheme="system"

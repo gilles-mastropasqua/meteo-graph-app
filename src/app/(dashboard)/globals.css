@@ -190,6 +190,18 @@
     --rdp-gradient-direction: 90deg;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.dashboard_container {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
 h1 {
     @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
 }
@@ -222,6 +234,10 @@ p {
     pointer-events: none;
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+.poste_popup_container {
+    position: sticky !important;
 }
 
 .poste_popup_container .mapboxgl-popup-content {

@@ -30,7 +30,7 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
 
     const { items } = useBreadcrumbStore();
     return (
-        <SidebarProvider>
+        <SidebarProvider className={'dashboard_container'}>
             <Sidebar collapsible="icon">
                 <SidebarHeader className={'h-12 border-b border-sidebar-border'}>
                     <SidebarMenu>
@@ -55,7 +55,7 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
                 </SidebarContent>
                 <SidebarRail />
             </Sidebar>
-            <SidebarInset>
+            <SidebarInset className={'overflow-hidden'}>
                 <header
                     className="bg-sidebar/85 absolute z-50 w-full flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b border-sidebar-border">
                     <div className={'flex justify-between w-full pr-2'}>
@@ -85,7 +85,7 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
                         </div>
                     </div>
                 </header>
-                <div className="flex flex-1 flex-col gap-4 h-[calc(100vh)]">
+                <div className="flex flex-1 flex-col gap-4 h-[calc(100vh)] !overflow-hidden">
                     {children}
                     <PosteDrawer />
                 </div>
