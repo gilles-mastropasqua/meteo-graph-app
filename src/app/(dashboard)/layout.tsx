@@ -19,7 +19,7 @@ export default function DashboardLayout({
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
         </head>
-        <body className="h-screen flex flex-col">
+        <body className="h-[100dvh] flex flex-col">
         <ThemeProvider
             attribute="class"
             defaultTheme="system"

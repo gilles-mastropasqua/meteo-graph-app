@@ -190,13 +190,8 @@
     --rdp-gradient-direction: 90deg;
 }
 
-html, body {
-    height: 100%;
-    overflow: hidden;
-}
-
 .dashboard_container {
-    height: 100vh;
+    height: 100dvh;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;

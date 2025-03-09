@@ -85,7 +85,7 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
                         </div>
                     </div>
                 </header>
-                <div className="flex flex-1 flex-col gap-4 h-[calc(100vh)] !overflow-hidden">
+                <div className="flex flex-1 flex-col gap-4 h-[100dvh] !overflow-hidden relative">
                     {children}
                     <PosteDrawer />
                 </div>

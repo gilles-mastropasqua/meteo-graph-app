@@ -361,15 +361,18 @@ const MeteoGraphMap = () => {
             mapInstance.current.resize();
         }
     }, [isMapReady]);
-    
+
 
     return (
         <>
+            {!isMapReady && <div className={'relative'}><Loading text="Loading map..." /></div>}
+
             <div
-                className={`min-h-[100vh] flex-1 bg-muted/50 md:min-h-min overflow-hidden transition-opacity duration-500 ${isMapReady ? 'opacity-100' : 'opacity-0'}`}
+                className={`relative min-h-[100dvh] flex-1 bg-muted/50 md:min-h-min overflow-hidden transition-opacity duration-500 ${isMapReady ? 'opacity-100' : 'opacity-0'}`}
                 ref={mapContainer}
-            />
-            {!isMapReady && <Loading text="Loading map..." />}
+            >
+
+            </div>
         </>
     );
 };
