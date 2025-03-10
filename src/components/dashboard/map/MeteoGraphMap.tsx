@@ -366,12 +366,10 @@ const MeteoGraphMap = () => {
     return (
         <>
             {!isMapReady && <div className={'relative'}><Loading text="Loading map..." /></div>}
-
             <div
                 className={`relative min-h-[100dvh] flex-1 bg-muted/50 md:min-h-min overflow-hidden transition-opacity duration-500 ${isMapReady ? 'opacity-100' : 'opacity-0'}`}
                 ref={mapContainer}
             >
-
             </div>
         </>
     );

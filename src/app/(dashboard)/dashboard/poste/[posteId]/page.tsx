@@ -19,7 +19,7 @@ export default function PostePage() {
         }
     }, [posteId, setBreadcrumb]);
 
-    if (!posteId) return <p>Loading...</p>; // ✅ Sécurise contre les valeurs `undefined`
+    if (!posteId) return <p>Loading...</p>;
 
     return (
         <h1>hello</h1>
