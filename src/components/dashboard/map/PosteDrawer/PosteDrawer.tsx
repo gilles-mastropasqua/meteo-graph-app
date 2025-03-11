@@ -12,24 +12,16 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { ArrowRightFromLine, X } from 'lucide-react';
-import { getStationType } from '@/lib/map';
-
-const formatDate = (dateStr: string | null | undefined): string => {
-    if (!dateStr) return 'N/A';
-    const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric',
-    });
-};
+import StationInfo from '@/components/dashboard/map/PosteDrawer/StationInfo';
+import { Poste } from '@/graphql/generated';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function PosteDrawer() {
     const { selectedPoste, isOpen, closeDrawer } = usePopupStore();
 
     return (
         <Drawer open={isOpen} onOpenChange={closeDrawer} direction="right">
-            <DrawerContent className="!w-[90%] lg:!w-[75%] !max-w-full border-l-1 border-sidebar-border">
+            <DrawerContent className="!w-[100%] lg:!w-[75%] !max-w-full border-l-1 border-sidebar-border">
 
                 <DrawerClose asChild>
                     <Button
@@ -41,88 +33,42 @@ export default function PosteDrawer() {
                     </Button>
                 </DrawerClose>
 
-                {/* ✅ Contenu du Drawer */}
-                <DrawerHeader>
+                <DrawerHeader className={'p-1 sm:p-4'}>
                     <DrawerTitle
-                        className={'!text-2xl'}>{selectedPoste?.nomUsuel ?? 'Unknown Poste'} <span
-                        className={'text-lg'}>#{selectedPoste?.numPoste ?? 'Unknown ID'}</span>
+                        className={'!text-lg sm:!text-2xl'}>{selectedPoste?.nomUsuel ?? 'Unknown Poste'} <span
+                        className={'text-sm sm:text-lg'}>#{selectedPoste?.numPoste ?? 'Unknown ID'}</span>
                     </DrawerTitle>
-                    <hr className={'mb-2 mt-1'} />
+                    <hr className={'mb-1 mt-0.5 sm:mb-2 sm:mt-1'} />
                     <DrawerDescription asChild>
-                        {/*<div className="space-y-2">*/}
-                        {/*    <p><strong>City:</strong> {selectedPoste?.commune ?? 'N/A'}</p>*/}
-                        {/*    <p><strong>Altitude:</strong> {selectedPoste?.alti ?? 'N/A'} m</p>*/}
-                        {/*    <p><strong>Station Type:</strong> {selectedPoste?.typePosteActuel ?? 'N/A'}</p>*/}
-                        {/*</div>*/}
-                        <div className="flex flex-1 flex-col gap-4 pt-0">
-                            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                                <div className="aspect-video rounded-sm bg-muted/50 p-2">
-                                    <div className="space-y-2">
-                                        <table className="w-full text-sm">
-                                            <tbody>
-                                            <tr>
-                                                <td>City:</td>
-                                                <td>{selectedPoste?.commune || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Altitude:</td>
-                                                <td>{selectedPoste?.alti || 'N/A'} m</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Opening Date:</td>
-                                                <td>{formatDate(selectedPoste?.datouvr)}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Closing Date:</td>
-                                                <td>{formatDate(selectedPoste?.datferm)}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Location:</td>
-                                                <td>{selectedPoste?.lieuDit || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Latitude:</td>
-                                                <td>{selectedPoste?.lat}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Longitude:</td>
-                                                <td>{selectedPoste?.lon}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>LambX:</td>
-                                                <td>${selectedPoste?.lambx}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>LambY:</td>
-                                                <td>{selectedPoste?.lamby}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Station Type:</td>
-                                                <td>{selectedPoste?.typePosteActuel}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <p>{getStationType(selectedPoste?.typePosteActuel)}</p>
+                        <ScrollArea className="h-[100vh] w-full">
+                            <div className="poste_drawer">
+                                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                                    <StationInfo selectedPoste={selectedPoste as Poste} />
+                                    <div className="aspect-video rounded-xs bg-muted/50 p-2">
+                                        <h5 className={'text-lg'}>Available data:</h5>
+                                        <ul className={'space-y-1'}>
+                                            <li>Temperature</li>
+                                            <li>Humidity</li>
+                                            <li>Wind</li>
+                                            <li>Pressure</li>
+                                            <li>Rain</li>
+                                        </ul>
                                     </div>
+                                    <div className="aspect-video rounded-xs bg-muted/50" />
                                 </div>
-                                <div className="aspect-video rounded-xl bg-muted/50" />
-                                <div className="aspect-video rounded-xl bg-muted/50" />
+                                <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min"></div>
                             </div>
-                            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min"></div>
-                        </div>
+                        </ScrollArea>
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <DrawerFooter className="absolute bottom-1 right-1 pr-4 pb-4">
+                <DrawerFooter className="absolute bottom-0 right-0 p-2">
                     <DrawerClose asChild>
                         <Button
-                            variant="outline"
-                            className="w-[150px] flex items-center gap-2 bg-primary text-primary-foreground
-                                       hover:bg-primary-foreground hover:text-primary active:bg-primary
-                                       active:text-primary-foreground rounded-xs"
+                            className="mt-2 bg-primary text-primary-foreground rounded-xs hover:cursor-pointer hover:bg-primary-foreground hover:text-primary px-0 py-1 h-auto"
                         >
-                            Back to map
-                            <ArrowRightFromLine size={20} />
+                            <span className={'hidden sm:inline'}>Back to map</span>
+                            <ArrowRightFromLine size={10} />
                         </Button>
                     </DrawerClose>
                 </DrawerFooter>
@@ -131,3 +77,5 @@ export default function PosteDrawer() {
         </Drawer>
     );
 }
+
+

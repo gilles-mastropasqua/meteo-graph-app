@@ -281,9 +281,9 @@ const MeteoGraphMap = () => {
                     .setLngLat(geometry.coordinates as [number, number])
                     .setHTML(`
                         <div class="popup-content">
-                            <h5 class="text-center">#${poste.numPoste}</h5>
                             <h4 class="text-center">${poste.nomUsuel || 'Unknown Name'}</h4>
-                            <hr class="mt-3 mb-4"/>
+                            <h5 class="text-center">#${poste.numPoste}</h5>
+                            <hr/>
                             <table class="w-full text-sm">
                                 <tbody>
                                     <tr><td>City:</td><td>${poste.commune || 'N/A'}</td></tr>

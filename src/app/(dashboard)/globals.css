@@ -7,6 +7,7 @@
 @theme {
     /*--font-sans: var(--font-geist-sans);*/
     /*--font-mono: var(--font-geist-mono);*/
+    --text-md: 0.85rem;
     --text-sm: 0.78rem;
     --text-xs: 0.70rem;
 }
@@ -244,6 +245,18 @@ p {
     white-space: normal;
 }
 
+.mapboxgl-popup-content h4 {
+    @apply inline-block sm:block text-md sm:text-xl
+}
+
+.mapboxgl-popup-content h5 {
+    @apply inline-block sm:block text-sm sm:text-md
+}
+
+.mapboxgl-popup-content hr {
+    @apply mt-2 mb-2 sm:mt-3 sm:mb-4
+}
+
 .poste_popup_container .mapboxgl-popup-tip {
     border-bottom-color: var(--color-background) !important;
 }
@@ -274,4 +287,32 @@ p {
 
 .poste_popup_container tbody tr td:first-child {
     @apply font-semibold ;
+}
+
+/* Poste Drawer */
+.poste_drawer {
+    @apply flex flex-1 flex-col gap-4 pt-0
+}
+
+.info_station {
+    table {
+        @apply border-1 border-sidebar-border text-xs;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    tbody tr {
+        /*@apply bg-background/50 even:bg-foreground/10;*/
+    }
+
+    tbody tr td {
+        @apply px-2 py-1 text-left border-1 border-sidebar-border;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+    }
+
+    tbody tr td:first-child {
+        @apply font-semibold ;
+    }
 }
