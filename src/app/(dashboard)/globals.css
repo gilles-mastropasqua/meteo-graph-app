@@ -301,8 +301,17 @@ p {
         max-width: 100% !important;
     }
 
-    tbody tr {
-        /*@apply bg-background/50 even:bg-foreground/10;*/
+    thead tr {
+        @apply bg-primary text-center text-primary-foreground rounded-sm;
+
+        h3 {
+            @apply text-md font-light;
+        }
+    }
+
+    tbody tr, thead tr {
+        
+        height: 30px;
     }
 
     tbody tr td {
@@ -311,6 +320,11 @@ p {
         overflow: hidden !important;
         text-overflow: ellipsis;
     }
+
+    tfoot tr td {
+        @apply px-2 py-2 pb-3;
+    }
+
 
     tbody tr td:first-child {
         @apply font-semibold ;

@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { FileText } from 'lucide-react';
 import { getStationType } from '@/lib/map';
-import { checkPdfExists } from '@/components/dashboard/map/actions/checkPdf';
+import { checkPdfExists } from '@/actions/checkPdf';
 import CopyableText from '@/components/ui/CopyableText';
 import { Poste } from '@/graphql/generated';
 import { getDepartementCodeFromNumPoste, getDepartmentNameFromNumPoste } from '@/lib/departments';
@@ -24,9 +24,14 @@ export default function StationInfo({ selectedPoste }: { selectedPoste: Poste })
 
 
     return (
-        <div className="aspect-video info_station">
+        <div className="info_station">
             <div className="space-y-2">
-                <table className="w-full text-sm border-collapse">
+                <table className="w-full text-sm border-separate border-spacing-0 rounded-sm overflow-hidden">
+                    <thead>
+                    <tr>
+                        <td colSpan={2} className={'rounded-t-sm'}><h3>Poste Informations</h3></td>
+                    </tr>
+                    </thead>
                     <tbody>
                     <tr>
                         <td>Name:</td>
@@ -113,14 +118,20 @@ export default function StationInfo({ selectedPoste }: { selectedPoste: Poste })
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colSpan={2}>
+                            <p>{getStationType(selectedPoste?.typePosteActuel)}</p>
+                            <DownloadButton numPoste={selectedPoste?.numPoste} />
+                        </td>
+                    </tr>
+                    </tfoot>
                 </table>
-                <p>{getStationType(selectedPoste?.typePosteActuel)}</p>
-                <DownloadButton numPoste={selectedPoste?.numPoste} />
+
 
             </div>
         </div>
-    )
-        ;
+    );
 }
 
 function DownloadButton({ numPoste }: { numPoste: string | undefined }) {

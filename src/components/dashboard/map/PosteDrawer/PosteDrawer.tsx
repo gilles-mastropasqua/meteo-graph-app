@@ -15,9 +15,11 @@ import { ArrowRightFromLine, X } from 'lucide-react';
 import StationInfo from '@/components/dashboard/map/PosteDrawer/StationInfo';
 import { Poste } from '@/graphql/generated';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import NonEmptyFields from '@/components/dashboard/map/PosteDrawer/NonEmptyFields';
 
 export default function PosteDrawer() {
     const { selectedPoste, isOpen, closeDrawer } = usePopupStore();
+
 
     return (
         <Drawer open={isOpen} onOpenChange={closeDrawer} direction="right">
@@ -42,19 +44,10 @@ export default function PosteDrawer() {
                     <DrawerDescription asChild>
                         <ScrollArea className="h-[100vh] w-full">
                             <div className="poste_drawer">
-                                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                                <div className="grid auto-rows-min gap-4 md:grid-cols-2">
                                     <StationInfo selectedPoste={selectedPoste as Poste} />
-                                    <div className="aspect-video rounded-xs bg-muted/50 p-2">
-                                        <h5 className={'text-lg'}>Available data:</h5>
-                                        <ul className={'space-y-1'}>
-                                            <li>Temperature</li>
-                                            <li>Humidity</li>
-                                            <li>Wind</li>
-                                            <li>Pressure</li>
-                                            <li>Rain</li>
-                                        </ul>
-                                    </div>
-                                    <div className="aspect-video rounded-xs bg-muted/50" />
+                                    <NonEmptyFields numPoste={selectedPoste?.numPoste ?? ''} />
+
                                 </div>
                                 <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min"></div>
                             </div>

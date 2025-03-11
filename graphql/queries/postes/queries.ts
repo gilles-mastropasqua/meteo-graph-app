@@ -5,11 +5,11 @@ export const GET_POSTES = gql`
         findManyPoste(
             where: {
                 AND: [
-                    { datouvr: { lte: $startDate } }  # Le poste a ouvert AVANT OU À la date de début
+                    { datouvr: { lte: $startDate } }
                     {
                         OR: [
-                            { datferm: { equals: null } },  # Poste toujours ouvert
-                            { datferm: { gte: $endDate } }  # Fermé après la date de fin
+                            { datferm: { equals: null } },
+                            { datferm: { gte: $endDate } }
                         ]
                     }
                 ]
