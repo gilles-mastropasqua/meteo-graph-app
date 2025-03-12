@@ -55,6 +55,9 @@ export default function PosteDrawer() {
                                     <TabsTrigger className={'rounded-xs'} value="observations">
                                         Observations
                                     </TabsTrigger>
+                                    <TabsTrigger className={'rounded-xs'} value="Graphs">
+                                        Graphs
+                                    </TabsTrigger>
                                     <TabsTrigger className={'rounded-xs'} value="download">
                                         Download
                                     </TabsTrigger>
@@ -67,6 +70,10 @@ export default function PosteDrawer() {
                                         </div>
                                     </TabsContent>
                                     <TabsContent value="observations">
+                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="graphs">
                                         <div className="grid auto-rows-min gap-4 md:grid-cols-2">
                                         </div>
                                     </TabsContent>
