@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import {
     Drawer,
+    DrawerClose,
     DrawerContent,
     DrawerDescription,
     DrawerHeader,
@@ -15,6 +16,8 @@ import 'react-day-picker/style.css';
 import { addDays, format, subDays } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { usePostesStore } from '@/stores/usePostesStore';
+import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
 
 interface DatePickerProps {
     initialStartDate: Date;
@@ -43,6 +46,15 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                 </a>
             </DrawerTrigger>
             <DrawerContent className="p-6 text-center">
+                <DrawerClose asChild>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-1 right-1 text-primary hover:text-foreground"
+                    >
+                        <X className="size-6" />
+                    </Button>
+                </DrawerClose>
                 <ScrollArea className="h-[400px] sm:h-[500px] w-full">
                     <DrawerHeader>
                         <DrawerTitle asChild><h2>Select a period</h2></DrawerTitle>
