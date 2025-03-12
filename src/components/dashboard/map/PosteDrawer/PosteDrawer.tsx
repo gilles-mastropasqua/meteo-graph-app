@@ -49,11 +49,15 @@ export default function PosteDrawer() {
 
                             <Tabs defaultValue="infos" className="w-full relative" orientation="vertical">
                                 <TabsList className={'mb-1 rounded-xs flex w-full'}>
-                                    <TabsTrigger className={'rounded-xs'} value="infos">Infos</TabsTrigger>
-                                    <TabsTrigger className={'rounded-xs'}
-                                                 value="observations">Observations</TabsTrigger>
-                                    <TabsTrigger className={'rounded-xs'}
-                                                 value="download">Download</TabsTrigger>
+                                    <TabsTrigger className={'rounded-xs'} value="infos">
+                                        Infos
+                                    </TabsTrigger>
+                                    <TabsTrigger className={'rounded-xs'} value="observations">
+                                        Observations
+                                    </TabsTrigger>
+                                    <TabsTrigger className={'rounded-xs'} value="download">
+                                        Download
+                                    </TabsTrigger>
                                 </TabsList>
                                 <ScrollArea className="h-[calc(100vh-120px)] w-full">
                                     <TabsContent value="infos">

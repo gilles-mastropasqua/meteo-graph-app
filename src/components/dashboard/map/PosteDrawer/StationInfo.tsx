@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { FileText } from 'lucide-react';
+import { FileText, Info } from 'lucide-react';
 import { getStationType } from '@/lib/map';
 import { checkPdfExists } from '@/actions/checkPdf';
 import CopyableText from '@/components/ui/CopyableText';
 import { Poste } from '@/graphql/generated';
 import { getDepartementCodeFromNumPoste, getDepartmentNameFromNumPoste } from '@/lib/departments';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const formatDate = (dateStr: string | null | undefined): string => {
     if (!dateStr) return 'N/A';
@@ -29,7 +30,25 @@ export default function StationInfo({ selectedPoste }: { selectedPoste: Poste })
                 <table className="w-full text-sm border-spacing-0 rounded-xs overflow-hidden">
                     <thead>
                     <tr>
-                        <td colSpan={2} className={'rounded-t-xs'}><h3>Poste Informations</h3></td>
+                        <td colSpan={2} className={'rounded-t-xs'}>
+                            <h3 className={'flex gap-1 justify-center'}>
+                                <span className={'relative'}>Poste Informations</span>
+                                <TooltipProvider delayDuration={1000} skipDelayDuration={500}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                                    <span>
+                                                        <Info size={4}
+                                                              className={'w-4 h-4 relative top-[-2px] '} />
+                                                    </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Informations about the station during the selected poste opening
+                                                period.</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </h3>
+                        </td>
                     </tr>
                     </thead>
                     <tbody>
