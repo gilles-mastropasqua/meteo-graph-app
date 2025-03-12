@@ -50,10 +50,10 @@ export default function NonEmptyFields({ numPoste }: { numPoste: string }) {
 
 
                     <table
-                        className="w-full text-sm border-separate border-spacing-0 rounded-sm overflow-hidden border-collapse">
+                        className="w-full text-sm border-spacing-0 rounded-xs overflow-hidden border-collapse">
                         <thead>
                         <tr>
-                            <td colSpan={2} className={'rounded-t-sm'}><h3>Available Hourly Observations</h3></td>
+                            <td colSpan={2} className={'rounded-t-xs'}><h3>Available Hourly Observations</h3></td>
                         </tr>
                         </thead>
                         <tbody>

@@ -296,7 +296,7 @@ p {
 
 .info_station {
     table {
-        @apply border-1 border-sidebar-border text-xs;
+        @apply text-xs;
         width: 100% !important;
         max-width: 100% !important;
     }
@@ -310,19 +310,18 @@ p {
     }
 
     tbody tr, thead tr {
-        
         height: 30px;
     }
 
     tbody tr td {
         @apply px-2 py-1 text-left border-1 border-sidebar-border;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis;
+        /*white-space: nowrap !important;*/
+        /*overflow: hidden !important;*/
+        /*text-overflow: ellipsis;*/
     }
 
     tfoot tr td {
-        @apply px-2 py-2 pb-3;
+        @apply px-2 py-2 pb-3 border-1 border-sidebar-border;
     }
 
 

@@ -16,6 +16,7 @@ import StationInfo from '@/components/dashboard/map/PosteDrawer/StationInfo';
 import { Poste } from '@/graphql/generated';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import NonEmptyFields from '@/components/dashboard/map/PosteDrawer/NonEmptyFields';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function PosteDrawer() {
     const { selectedPoste, isOpen, closeDrawer } = usePopupStore();
@@ -40,21 +41,40 @@ export default function PosteDrawer() {
                         className={'!text-lg sm:!text-2xl'}>{selectedPoste?.nomUsuel ?? 'Unknown Poste'} <span
                         className={'text-sm sm:text-lg'}>#{selectedPoste?.numPoste ?? 'Unknown ID'}</span>
                     </DrawerTitle>
-                    <hr className={'mb-1 mt-0.5 sm:mb-2 sm:mt-1'} />
+                    {/*<hr className={'mb-1 mt-0.5 sm:mb-2 sm:mt-1'} />*/}
                     <DrawerDescription asChild>
-                        <ScrollArea className="h-[100vh] w-full">
-                            <div className="poste_drawer">
-                                <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                                    <StationInfo selectedPoste={selectedPoste as Poste} />
-                                    <NonEmptyFields numPoste={selectedPoste?.numPoste ?? ''} />
 
-                                </div>
-                                <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min"></div>
-                            </div>
-                        </ScrollArea>
+
+                        <div className="poste_drawer">
+
+                            <Tabs defaultValue="infos" className="w-full relative" orientation="vertical">
+                                <TabsList className={'mb-1 rounded-xs flex w-full'}>
+                                    <TabsTrigger className={'rounded-xs'} value="infos">Infos</TabsTrigger>
+                                    <TabsTrigger className={'rounded-xs'}
+                                                 value="observations">Observations</TabsTrigger>
+                                    <TabsTrigger className={'rounded-xs'}
+                                                 value="download">Download</TabsTrigger>
+                                </TabsList>
+                                <ScrollArea className="h-[calc(100vh-120px)] w-full">
+                                    <TabsContent value="infos">
+                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                                            <StationInfo selectedPoste={selectedPoste as Poste} />
+                                            <NonEmptyFields numPoste={selectedPoste?.numPoste ?? ''} />
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="observations">
+                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="download">
+                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                                        </div>
+                                    </TabsContent>
+                                </ScrollArea>
+                            </Tabs>
+                        </div>
                     </DrawerDescription>
                 </DrawerHeader>
-
                 <DrawerFooter className="absolute bottom-0 right-0 p-2">
                     <DrawerClose asChild>
                         <Button

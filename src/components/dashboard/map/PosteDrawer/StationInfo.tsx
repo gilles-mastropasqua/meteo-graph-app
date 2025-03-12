@@ -26,10 +26,10 @@ export default function StationInfo({ selectedPoste }: { selectedPoste: Poste })
     return (
         <div className="info_station">
             <div className="space-y-2">
-                <table className="w-full text-sm border-separate border-spacing-0 rounded-sm overflow-hidden">
+                <table className="w-full text-sm border-spacing-0 rounded-xs overflow-hidden">
                     <thead>
                     <tr>
-                        <td colSpan={2} className={'rounded-t-sm'}><h3>Poste Informations</h3></td>
+                        <td colSpan={2} className={'rounded-t-xs'}><h3>Poste Informations</h3></td>
                     </tr>
                     </thead>
                     <tbody>
