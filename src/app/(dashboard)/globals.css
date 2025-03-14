@@ -326,6 +326,27 @@ p {
 
 
     tbody tr td:first-child {
-        @apply font-semibold ;
+        @apply font-semibold;
     }
+}
+
+.observation_table {
+    position: relative;
+
+}
+
+.observation_table thead tr th:first-child {
+    @apply sticky left-0 z-10;
+
+    button {
+        @apply -ml-1
+    }
+}
+
+.observation_table tbody tr td:first-child {
+    @apply sticky left-0 z-9 bg-background transition-colors;
+}
+
+.observation_table tbody tr:hover td:first-child {
+    @apply bg-muted;
 }

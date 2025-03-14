@@ -34,7 +34,7 @@ export default function Loading({
                             className="fill-primary"
                         />
                     </svg>
-                    <span className="mt-4 text-xl font-semibold text-white">{text}</span>
+                    <span className="mt-4 text-xl font-semibold text-foreground">{text}</span>
                     <span className="sr-only text-foreground">Loading...</span>
                 </div>
             </div>

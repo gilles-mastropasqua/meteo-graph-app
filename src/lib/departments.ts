@@ -36,6 +36,7 @@ export const departments: Record<string, string> = {
     '17': 'Charente-Maritime',
     '18': 'Cher',
     '19': 'Corrèze',
+    '20': 'Corse',
     '21': 'Côte-d\'Or',
     '22': 'Côtes-d\'Armor',
     '23': 'Creuse',

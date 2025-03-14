@@ -12,18 +12,19 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { ArrowRightFromLine, X } from 'lucide-react';
-import StationInfo from '@/components/dashboard/map/PosteDrawer/StationInfo';
+import StationInfo from '@/components/dashboard/map/PosteDrawer/tabs/infos/StationInfo';
 import { Poste } from '@/graphql/generated';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import NonEmptyFields from '@/components/dashboard/map/PosteDrawer/NonEmptyFields';
+import NonEmptyFields from '@/components/dashboard/map/PosteDrawer/tabs/infos/NonEmptyFields';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Observations from '@/components/dashboard/map/PosteDrawer/tabs/observations/Observations';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function PosteDrawer() {
     const { selectedPoste, isOpen, closeDrawer } = usePopupStore();
 
 
     return (
-        <Drawer open={isOpen} onOpenChange={closeDrawer} direction="right">
+        <Drawer open={isOpen} onOpenChange={closeDrawer} direction="right" handleOnly={true}>
             <DrawerContent className="!w-[100%] lg:!w-[75%] !max-w-full border-l-1 border-sidebar-border">
 
                 <DrawerClose asChild>
@@ -62,26 +63,27 @@ export default function PosteDrawer() {
                                         Download
                                     </TabsTrigger>
                                 </TabsList>
-                                <ScrollArea className="h-[calc(100vh-120px)] w-full">
-                                    <TabsContent value="infos">
+                                <TabsContent value="infos">
+                                    <ScrollArea
+                                        className="h-[calc(100vh-120px)] w-full max-w-full overflow-y-auto">
                                         <div className="grid auto-rows-min gap-4 md:grid-cols-2">
                                             <StationInfo selectedPoste={selectedPoste as Poste} />
                                             <NonEmptyFields numPoste={selectedPoste?.numPoste ?? ''} />
                                         </div>
-                                    </TabsContent>
-                                    <TabsContent value="observations">
-                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                                        </div>
-                                    </TabsContent>
-                                    <TabsContent value="graphs">
-                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                                        </div>
-                                    </TabsContent>
-                                    <TabsContent value="download">
-                                        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                                        </div>
-                                    </TabsContent>
-                                </ScrollArea>
+                                    </ScrollArea>
+
+                                </TabsContent>
+                                <TabsContent value="observations">
+                                    <Observations selectedPoste={selectedPoste as Poste} />
+                                </TabsContent>
+                                <TabsContent value="graphs">
+                                    <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                                    </div>
+                                </TabsContent>
+                                <TabsContent value="download">
+                                    <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                                    </div>
+                                </TabsContent>
                             </Tabs>
                         </div>
                     </DrawerDescription>

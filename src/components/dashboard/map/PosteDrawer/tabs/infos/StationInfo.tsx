@@ -23,7 +23,6 @@ const formatDate = (dateStr: string | null | undefined): string => {
 
 export default function StationInfo({ selectedPoste }: { selectedPoste: Poste }) {
 
-
     return (
         <div className="info_station">
             <div className="space-y-2">
@@ -132,7 +131,7 @@ export default function StationInfo({ selectedPoste }: { selectedPoste: Poste })
                     <tr>
                         <td>Station Type:</td>
                         <td>
-                            <CopyableText text={selectedPoste?.typePosteActuel || 'N/A'}
+                            <CopyableText text={selectedPoste?.typePosteActuel ?? 'N/A'}
                                           className={'flex justify-between'} />
                         </td>
                     </tr>

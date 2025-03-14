@@ -19,6 +19,5 @@ export const getStationType = (type: number | null | undefined): string => {
         return 'Unknown station type';
     }
 
-
     return stationTypes[type];
 };

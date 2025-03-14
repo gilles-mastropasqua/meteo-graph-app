@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/drawer';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/style.css';
-import { addDays, format, subDays } from 'date-fns';
+import { addDays, differenceInDays, format, subDays } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { usePostesStore } from '@/stores/usePostesStore';
 import { Button } from '@/components/ui/button';
@@ -24,10 +24,55 @@ interface DatePickerProps {
     initialEndDate: Date;
 }
 
+const MAX_DAYS = 90; // 🔥 3 mois max (90 jours)
+const MIN_DAYS = 7;   // 🔥 7 jours min
+
 export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps) {
     const { fetchPostes } = usePostesStore();
     const [startDate, setStartDate] = React.useState<Date>(initialStartDate);
     const [endDate, setEndDate] = React.useState<Date>(initialEndDate);
+
+    /**
+     * Met à jour la date de début
+     */
+    const handleStartDateChange = (date: Date | undefined) => {
+        if (!date) return;
+        let newEndDate = endDate;
+
+        // 🔥 Si `endDate` dépasse les 6 mois d'écart, l'ajuster
+        if (differenceInDays(newEndDate, date) > MAX_DAYS) {
+            newEndDate = addDays(date, MAX_DAYS);
+        }
+
+        // 🔥 Assurer un minimum de 7 jours entre start et end
+        if (differenceInDays(newEndDate, date) < MIN_DAYS) {
+            newEndDate = addDays(date, MIN_DAYS);
+        }
+
+        setStartDate(date);
+        setEndDate(newEndDate);
+    };
+
+    /**
+     * Met à jour la date de fin
+     */
+    const handleEndDateChange = (date: Date | undefined) => {
+        if (!date) return;
+        let newStartDate = startDate;
+
+        // 🔥 Si `startDate` est trop loin, l'ajuster
+        if (differenceInDays(date, newStartDate) > MAX_DAYS) {
+            newStartDate = subDays(date, MAX_DAYS);
+        }
+
+        // 🔥 Assurer un minimum de 7 jours entre start et end
+        if (differenceInDays(date, newStartDate) < MIN_DAYS) {
+            newStartDate = subDays(date, MIN_DAYS);
+        }
+
+        setStartDate(newStartDate);
+        setEndDate(date);
+    };
 
     /**
      * Fetch postes when the date range changes.
@@ -59,7 +104,8 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                     <DrawerHeader>
                         <DrawerTitle asChild><h2>Select a period</h2></DrawerTitle>
                         <DrawerDescription className="mt-0">
-                            Choose a start date and an end date (min. 7 days).
+                            Choose a start date and an end date.<br /> (min. 7 days, max. 3 months for hourly
+                            observations)
                         </DrawerDescription>
                     </DrawerHeader>
 
@@ -75,9 +121,11 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                                 showOutsideDays
                                 mode="single"
                                 selected={startDate}
-                                onSelect={setStartDate}
+                                onSelect={handleStartDateChange}
                                 defaultMonth={startDate}
-                                disabled={{ after: addDays(endDate, -7) }} // Ensures a minimum 7-day gap
+                                disabled={{
+                                    after: subDays(endDate, MIN_DAYS), // 🔥 Empêche une période < 7 jours
+                                }}
                             />
                         </div>
 
@@ -91,11 +139,11 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                                 showOutsideDays
                                 mode="single"
                                 selected={endDate}
-                                onSelect={setEndDate}
+                                onSelect={handleEndDateChange}
                                 defaultMonth={endDate}
                                 disabled={{
-                                    before: addDays(startDate, 7), // Ensures a minimum 7-day gap
-                                    after: subDays(new Date(), 1), // Prevents selecting future dates
+                                    before: addDays(startDate, MIN_DAYS), // 🔥 Minimum 7 jours après startDate
+                                    after: subDays(new Date(), 0), // 🔥 Pas de date future
                                 }}
                             />
                         </div>
