@@ -84,8 +84,6 @@ export function DataTable<TData, TValue>({
         <div className="space-y-4 max-w-full w-full flex-1 flex-col flex">
             <DataTableToolbar table={table} />
             <ScrollArea className="h-[calc(100vh-300px)] md:h-[calc(100vh-250px)] rounded-t-sm border border-border">
-                <ScrollBar orientation="horizontal" />
-                <ScrollBar orientation="vertical" />
                 <div className="">
                     <Table className={'observation_table'}>
                         <TableHeader>
@@ -111,10 +109,10 @@ export function DataTable<TData, TValue>({
                                 table.getRowModel().rows.map((row) => (
                                     <TableRow
                                         key={row.id}
-                                        data-state={row.getIsSelected() && 'selected'}
+                                        // data-state={row.getIsSelected() && 'selected'}
                                     >
                                         {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
+                                            <TableCell key={cell.id} className="select-text">
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
                                                     cell.getContext(),
@@ -136,6 +134,8 @@ export function DataTable<TData, TValue>({
                         </TableBody>
                     </Table>
                 </div>
+                <ScrollBar orientation="horizontal" className={'h-[12px] relative z-20 !-bottom-4'} />
+                <ScrollBar orientation="vertical" className={'w-[12px] relative z-20'} />
             </ScrollArea>
             <DataTablePagination table={table} />
         </div>

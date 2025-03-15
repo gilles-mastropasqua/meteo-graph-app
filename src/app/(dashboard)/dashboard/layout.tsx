@@ -1,9 +1,9 @@
 import DashboardTemplate from '@/components/dashboard/template';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-    title: 'Meteo Graph',
-    description: '',
+export const metadata = {
+    title: 'Meteo Graph - Historical Weather Observations',
+    description: 'Access detailed and structured weather observations derived from historical Météo-France data.\n' +
+        'Perfect for research, analytics, and visualization.',
 };
 
 export default async function DashboardLayout({

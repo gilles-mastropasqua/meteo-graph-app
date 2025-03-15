@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Illustration from '@/public/app/images/glow-bottom.svg';
 
 export const metadata = {
-    title: 'Meteo Graph',
-    description: '',
+    title: 'Meteo Graph - Historical Weather Observations',
+    description: 'Access detailed and structured weather observations derived from historical Météo-France data.\n' +
+        'Perfect for research, analytics, and visualization.',
 };
 
 

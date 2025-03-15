@@ -24,8 +24,8 @@ interface DatePickerProps {
     initialEndDate: Date;
 }
 
-const MAX_DAYS = 90; // 🔥 3 mois max (90 jours)
-const MIN_DAYS = 7;   // 🔥 7 jours min
+const MAX_DAYS = 90; // Maximum 90 days (3 months)
+const MIN_DAYS = 7;  // Minimum 7 days
 
 export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps) {
     const { fetchPostes } = usePostesStore();
@@ -33,18 +33,18 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
     const [endDate, setEndDate] = React.useState<Date>(initialEndDate);
 
     /**
-     * Met à jour la date de début
+     * Updates the start date and ensures constraints on the end date.
      */
     const handleStartDateChange = (date: Date | undefined) => {
         if (!date) return;
         let newEndDate = endDate;
 
-        // 🔥 Si `endDate` dépasse les 6 mois d'écart, l'ajuster
+        // Ensure the end date does not exceed the maximum allowed range
         if (differenceInDays(newEndDate, date) > MAX_DAYS) {
             newEndDate = addDays(date, MAX_DAYS);
         }
 
-        // 🔥 Assurer un minimum de 7 jours entre start et end
+        // Ensure a minimum period of 7 days
         if (differenceInDays(newEndDate, date) < MIN_DAYS) {
             newEndDate = addDays(date, MIN_DAYS);
         }
@@ -54,18 +54,18 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
     };
 
     /**
-     * Met à jour la date de fin
+     * Updates the end date and ensures constraints on the start date.
      */
     const handleEndDateChange = (date: Date | undefined) => {
         if (!date) return;
         let newStartDate = startDate;
 
-        // 🔥 Si `startDate` est trop loin, l'ajuster
+        // Ensure the start date is within the maximum allowed range
         if (differenceInDays(date, newStartDate) > MAX_DAYS) {
             newStartDate = subDays(date, MAX_DAYS);
         }
 
-        // 🔥 Assurer un minimum de 7 jours entre start et end
+        // Ensure a minimum period of 7 days
         if (differenceInDays(date, newStartDate) < MIN_DAYS) {
             newStartDate = subDays(date, MIN_DAYS);
         }
@@ -75,7 +75,7 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
     };
 
     /**
-     * Fetch postes when the date range changes.
+     * Fetches postes when the date range changes.
      */
     useEffect(() => {
         fetchPostes({ startDate, endDate });
@@ -124,7 +124,7 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                                 onSelect={handleStartDateChange}
                                 defaultMonth={startDate}
                                 disabled={{
-                                    after: subDays(endDate, MIN_DAYS), // 🔥 Empêche une période < 7 jours
+                                    after: subDays(endDate, MIN_DAYS), // Prevents a period shorter than 7 days
                                 }}
                             />
                         </div>
@@ -142,8 +142,8 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                                 onSelect={handleEndDateChange}
                                 defaultMonth={endDate}
                                 disabled={{
-                                    before: addDays(startDate, MIN_DAYS), // 🔥 Minimum 7 jours après startDate
-                                    after: subDays(new Date(), 0), // 🔥 Pas de date future
+                                    before: addDays(startDate, MIN_DAYS), // Minimum 7 days after start date
+                                    after: subDays(new Date(), 0), // No future dates allowed
                                 }}
                             />
                         </div>
