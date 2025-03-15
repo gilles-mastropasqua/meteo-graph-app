@@ -36,6 +36,8 @@ export default function AppLayout({
             {children}
             {/*<Footer />*/}
         </div>
+        <script defer src="https://unami-nine.vercel.app/init.js"
+                data-website-id="fb6c159e-0f87-4fd0-8ede-8e6249cfa69f"></script>
         </body>
         </html>
     );
