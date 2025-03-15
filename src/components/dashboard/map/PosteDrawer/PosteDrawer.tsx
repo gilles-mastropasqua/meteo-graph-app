@@ -56,12 +56,12 @@ export default function PosteDrawer() {
                                     <TabsTrigger className={'rounded-xs'} value="observations">
                                         Observations
                                     </TabsTrigger>
-                                    <TabsTrigger className={'rounded-xs'} value="Graphs">
-                                        Graphs
-                                    </TabsTrigger>
-                                    <TabsTrigger className={'rounded-xs'} value="download">
-                                        Download
-                                    </TabsTrigger>
+                                    {/*<TabsTrigger className={'rounded-xs'} value="Graphs">*/}
+                                    {/*    Graphs*/}
+                                    {/*</TabsTrigger>*/}
+                                    {/*<TabsTrigger className={'rounded-xs'} value="download">*/}
+                                    {/*    Download*/}
+                                    {/*</TabsTrigger>*/}
                                 </TabsList>
                                 <TabsContent value="infos">
                                     <ScrollArea
@@ -76,14 +76,14 @@ export default function PosteDrawer() {
                                 <TabsContent value="observations">
                                     <Observations selectedPoste={selectedPoste as Poste} />
                                 </TabsContent>
-                                <TabsContent value="graphs">
-                                    <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                                    </div>
-                                </TabsContent>
-                                <TabsContent value="download">
-                                    <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                                    </div>
-                                </TabsContent>
+                                {/*<TabsContent value="graphs">*/}
+                                {/*    <div className="grid auto-rows-min gap-4 md:grid-cols-2">*/}
+                                {/*    </div>*/}
+                                {/*</TabsContent>*/}
+                                {/*<TabsContent value="download">*/}
+                                {/*    <div className="grid auto-rows-min gap-4 md:grid-cols-2">*/}
+                                {/*    </div>*/}
+                                {/*</TabsContent>*/}
                             </Tabs>
                         </div>
                     </DrawerDescription>
