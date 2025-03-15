@@ -76,6 +76,8 @@ export function DataTable<TData, TValue>({
         );
 
         setColumnVisibility(hiddenColumns);
+
+        setSorting([{ id: 'dateObservation', desc: true }]);
     }, [table]);
 
     return (

@@ -1,20 +1,19 @@
 import Image from 'next/image';
-import Particles from './particles';
 import Illustration from '@/public/app/images/glow-bottom.svg';
 
 export default function Hero() {
     return (
         <section>
-            <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="relative">
 
                 {/* Particles animation */}
-                <Particles className="absolute inset-0 -z-10" />
+                {/*<Particles className="absolute inset-0 -z-10" />*/}
 
                 {/* Illustration */}
-                <div className="absolute inset-0 -z-10 -mx-28 rounded-b-[3rem] pointer-events-none overflow-hidden"
+                <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden"
                      aria-hidden="true">
-                    <div className="absolute left-1/2 -translate-x-1/2 bottom-0 -z-10">
-                        <Image src={Illustration} className="max-w-none" width={2146} priority
+                    <div className="absolute bottom-0 -z-10">
+                        <Image src={Illustration} className="w-full" width={2146} priority
                                alt="Hero Illustration" />
                     </div>
                 </div>

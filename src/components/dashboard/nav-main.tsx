@@ -98,7 +98,7 @@ export function NavMain() {
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton tooltip={'Period'}>
                                     <CalendarIcon />
-                                    <span>Opening poste period</span>
+                                    <span>Selected period</span>
                                     <ChevronRight
                                         className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                                 </SidebarMenuButton>

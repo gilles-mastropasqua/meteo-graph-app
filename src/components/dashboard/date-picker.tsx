@@ -86,7 +86,7 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
             <DrawerTrigger>
                 <a className="text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground flex h-7 min-w-0 items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 text-sm group-data-[collapsible=icon]:hidden">
                     <span>
-                        {format(startDate, 'P')} to {format(endDate, 'P')}
+                        {format(startDate, 'LLL dd, yyyy')} to {format(endDate, 'LLL dd, yyyy')}
                     </span>
                 </a>
             </DrawerTrigger>

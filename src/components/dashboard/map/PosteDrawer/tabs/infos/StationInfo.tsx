@@ -41,8 +41,7 @@ export default function StationInfo({ selectedPoste }: { selectedPoste: Poste })
                                                     </span>
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>Informations about the station during the selected poste opening
-                                                period.</p>
+                                            <p>Informations about the station during the selected period.</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
