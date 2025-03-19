@@ -8,7 +8,7 @@ interface ObservationFieldsEntry {
 }
 
 interface ObservationFieldsState {
-    observationFields: Record<string, ObservationFieldsEntry[]>; // Clé : numPoste → Liste d'entrées (dates + champs)
+    observationFields: Record<string, ObservationFieldsEntry[]>;
     loading: boolean;
     getObservationFields: (numPoste: string, startDate: Date, endDate: Date) => Promise<
         { field: string; description: string | null }[]

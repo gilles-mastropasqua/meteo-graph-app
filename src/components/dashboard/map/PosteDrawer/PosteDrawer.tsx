@@ -18,6 +18,8 @@ import NonEmptyFields from '@/components/dashboard/map/PosteDrawer/tabs/infos/No
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Observations from '@/components/dashboard/map/PosteDrawer/tabs/observations/Observations';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import Graphs from '@/components/dashboard/map/PosteDrawer/tabs/graphs/Graphs';
+
 
 export default function PosteDrawer() {
     const { selectedPoste, isOpen, closeDrawer } = usePopupStore();
@@ -56,9 +58,9 @@ export default function PosteDrawer() {
                                     <TabsTrigger className={'rounded-xs'} value="observations">
                                         Observations
                                     </TabsTrigger>
-                                    {/*<TabsTrigger className={'rounded-xs'} value="Graphs">*/}
-                                    {/*    Graphs*/}
-                                    {/*</TabsTrigger>*/}
+                                    <TabsTrigger className={'rounded-xs'} value="Graphs">
+                                        Graphs
+                                    </TabsTrigger>
                                     {/*<TabsTrigger className={'rounded-xs'} value="download">*/}
                                     {/*    Download*/}
                                     {/*</TabsTrigger>*/}
@@ -76,10 +78,12 @@ export default function PosteDrawer() {
                                 <TabsContent value="observations">
                                     <Observations selectedPoste={selectedPoste as Poste} />
                                 </TabsContent>
-                                {/*<TabsContent value="graphs">*/}
-                                {/*    <div className="grid auto-rows-min gap-4 md:grid-cols-2">*/}
-                                {/*    </div>*/}
-                                {/*</TabsContent>*/}
+                                <TabsContent value="Graphs">
+                                    <ScrollArea
+                                        className="h-[calc(100vh-120px)] w-full max-w-full overflow-y-auto">
+                                        <Graphs selectedPoste={selectedPoste as Poste} />
+                                    </ScrollArea>
+                                </TabsContent>
                                 {/*<TabsContent value="download">*/}
                                 {/*    <div className="grid auto-rows-min gap-4 md:grid-cols-2">*/}
                                 {/*    </div>*/}
