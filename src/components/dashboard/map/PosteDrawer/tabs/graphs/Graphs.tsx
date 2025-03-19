@@ -349,7 +349,7 @@ export default function Graphs({ selectedPoste }: { selectedPoste: Poste }) {
     }, [observations, backgroundColor, availableFields]);
 
     return (
-        <div ref={containerRef} className="flex flex-col h-[calc(100vh-120px)] md:h-[calc(100vh-150px)]">
+        <div ref={containerRef} className="flex flex-col h-[calc(100vh-190px)] md:h-[calc(100vh-150px)]">
             {loading || isLoading ? <Loading text={'Loading observations'} /> : null}
             {observations.length > 0 ? (
                 <div className="flex-1">
