@@ -24,7 +24,7 @@ interface DatePickerProps {
     initialEndDate: Date;
 }
 
-const MAX_DAYS = 90; // Maximum 90 days (3 months)
+const MAX_DAYS = 180; // Maximum 180 days (6 months)
 const MIN_DAYS = 7;  // Minimum 7 days
 
 export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps) {
@@ -104,8 +104,7 @@ export function DatePicker({ initialStartDate, initialEndDate }: DatePickerProps
                     <DrawerHeader>
                         <DrawerTitle asChild><h2>Select a period</h2></DrawerTitle>
                         <DrawerDescription className="mt-0">
-                            Choose a start date and an end date.<br /> (min. 7 days, max. 3 months for hourly
-                            observations)
+                            min. 7 days, max. 6 months
                         </DrawerDescription>
                     </DrawerHeader>
 

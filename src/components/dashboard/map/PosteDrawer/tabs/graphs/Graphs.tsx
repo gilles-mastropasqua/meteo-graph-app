@@ -68,6 +68,40 @@ const DESIRED_FIELDS = {
                 zlevel: 3,
             },
         },
+        {
+            key: 'td',
+            description: 'Dew point (°C)',
+            unit: '°C',
+            options: {
+                type: 'line' as const,
+                color: '#aa00ff',
+                lineStyle: {
+                    opacity: 0.5,
+                    width: 1,
+
+                },
+                yAxisIndex: 0,
+                smooth: false,
+                showSymbol: false,
+                zlevel: 3,
+            },
+        },
+        {
+            key: 'dg',
+            description: 'Duration of frost (min.)',
+            unit: '°C',
+            options: {
+                show: false,
+                type: 'bar' as const,
+                //color: '#00d8ff',
+                color: 'rgba(255,0,0,0.5)',
+                barWidth: '1px',
+                yAxisIndex: 3,
+                smooth: false,
+                showSymbol: false,
+                zlevel: 3,
+            },
+        },
     ],
     Precipitation: [
         {
@@ -100,7 +134,7 @@ const DESIRED_FIELDS = {
                 smooth: true,
                 showSymbol: false,
                 lineStyle: {
-                    opacity: 1,
+                    opacity: 0.5,
                     width: 1,
                 },
                 zlevel: 4,
@@ -117,7 +151,7 @@ const DESIRED_FIELDS = {
                 smooth: true,
                 showSymbol: false,
                 lineStyle: {
-                    opacity: 0.5,
+                    opacity: 0.2,
                     width: 1,
                 },
                 zlevel: 4,
@@ -134,7 +168,7 @@ const DESIRED_FIELDS = {
                 smooth: true,
                 showSymbol: false,
                 lineStyle: {
-                    opacity: 0.5,
+                    opacity: 0.2,
                     width: 1,
                 },
                 zlevel: 4,
@@ -311,6 +345,13 @@ export default function Graphs({ selectedPoste }: { selectedPoste: Poste }) {
                     show: false,
                     min: 0,
                     max: (value) => Math.ceil(value.max / 20) * 20,
+                },
+                {
+                    type: 'value',
+                    position: 'right',
+                    show: false,
+                    min: 0,
+                    max: 300,
                 },
             ],
             dataZoom: [

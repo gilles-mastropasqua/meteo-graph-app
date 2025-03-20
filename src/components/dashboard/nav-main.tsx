@@ -108,7 +108,7 @@ export function NavMain() {
                                     <SidebarMenuSubItem>
                                         <SidebarMenuSubButton asChild>
                                             <DatePicker
-                                                initialStartDate={subDays(new Date(), 14)}
+                                                initialStartDate={subDays(new Date(), 30)}
                                                 initialEndDate={subDays(new Date(), 1)}
                                             />
                                         </SidebarMenuSubButton>
