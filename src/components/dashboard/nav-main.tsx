@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarIcon, ChevronRight, MapPin, Ship, Snowflake, Sun, Waves } from 'lucide-react';
+import { CalendarIcon, ChevronRight, MapPin, Ship, Snowflake, Star, Sun, Waves } from 'lucide-react';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -19,7 +19,7 @@ import { DatePicker } from '@/components/dashboard/date-picker';
 import { subDays } from 'date-fns';
 import { useMapStore } from '@/stores/useMapStore';
 import React from 'react';
-
+import { FavoritesList } from '@/components/sidebar/FavoritesList';
 
 // 📍 France Métropolitaine
 const METROPOLE = [
@@ -84,12 +84,34 @@ const REGION_GROUPS = [
     { key: 'ILES', label: 'Scattered Islands', abbr: 'Iles Éparses', regions: ILES_EPARSES, icon: Waves },
 ];
 
-
 export function NavMain() {
     const { flyToLocation } = useMapStore();
 
     return (
         <>
+            <SidebarGroup>
+                <SidebarGroupLabel>Favorites</SidebarGroupLabel>
+                <SidebarMenu>
+                    <Collapsible asChild className="group/collapsible">
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton tooltip="Favorite stations">
+                                    <Star />
+                                    <span>Favorite stations</span>
+                                    <ChevronRight
+                                        className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <FavoritesList />
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                </SidebarMenu>
+            </SidebarGroup>
+
+            <SidebarSeparator />
+
             <SidebarGroup>
                 <SidebarGroupLabel>Filters</SidebarGroupLabel>
                 <SidebarMenu>
@@ -131,7 +153,7 @@ export function NavMain() {
                             <SidebarMenuItem>
                                 <CollapsibleTrigger asChild>
                                     <SidebarMenuButton tooltip={label}>
-                                        {React.createElement(icon, { className: 'w-5 h-5 mr-2' })}
+                                        {React.createElement(icon, {  })}
                                         <Tooltip>
                                             <TooltipTrigger asChild>
                                                 <span>{abbr}</span>
